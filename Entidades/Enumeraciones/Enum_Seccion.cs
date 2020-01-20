@@ -1,6 +1,6 @@
-namespace B_Lectura_E2K.Entidades
+namespace B_Lectura_E2K.Entidades.Enumeraciones
 {
-    public enum Tipo_Seccion
+    public enum Enum_Seccion
     {
         Rectangular,
         Circular,
