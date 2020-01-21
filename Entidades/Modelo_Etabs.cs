@@ -4,10 +4,10 @@ namespace B_Lectura_E2K.Entidades
 {
     public class Modelo_Etabs
     {
-        Version_Etabs version { get; set; }
-        List<Story> Stories { get; set; }
-        List<Material> Materials { get; set; }
-        List<IConcreteSection> ConcreteSections { get; set; }
-        List<ISteelSection> SteelSections { get; set; }
+        public Version_Etabs version { get; set; }
+        public List<Story> Stories { get; set; }
+        public List<Material> Materials { get; set; }
+        public List<IConcreteSection> ConcreteSections { get; set; }
+        public List<ISteelSection> SteelSections { get; set; }
     }
 }

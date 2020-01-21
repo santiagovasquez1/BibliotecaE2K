@@ -12,5 +12,9 @@ namespace B_Lectura_E2K.Entidades
             StoryHeight = height;
         }
 
+        public override string ToString()
+        {
+            return $"{StoryName} Elevation : {StoryElevation}";
+        }
     }
 }

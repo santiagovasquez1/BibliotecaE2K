@@ -1,13 +1,190 @@
-﻿using System;
-using B_Lectura_E2K.Entidades;
-using System.Linq;
+﻿using B_Lectura_E2K.Entidades;
+using B_Lectura_E2K.Entidades.Enumeraciones;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace B_Lectura_E2K
 {
-    public class Modelo_engine
+    public sealed class Modelo_engine
     {
+        public Modelo_Etabs modelo { get; set; }
+        public List<string> E2KFile { get; private set; }
 
+        public Modelo_engine()
+        {
+        }
 
+        public void Inicializar(List<string> E2KString)
+        {
+            E2KFile = E2KString;
+            modelo = new Modelo_Etabs();
+            modelo.version = GetVersion();
+            modelo.Stories = GetStories();
+            modelo.Materials = GetMaterials();
+        }
+
+        private Version_Etabs GetVersion()
+        {
+            int _start = 0;
+
+            _start = E2KFile.FindIndex(x => x.Contains("$ PROGRAM INFORMATION")) + 1;
+
+            if (E2KFile[_start].Contains("9.5.0"))
+            {
+                return Version_Etabs.ETABS9;
+            }
+            else
+            {
+                return Version_Etabs.ETABS2018;
+            }
+        }
+
+        private List<Story> GetStories()
+        {
+            var Stories = new List<Story>();
+            Story Storyi = null;
+            int inicio = 0; int fin = 0;
+            float Elevation = 0f;
+
+            inicio = E2KFile.FindIndex(x => x.Contains("$ STORIES - IN SEQUENCE FROM TOP")) + 1;
+
+            if (modelo.version == Version_Etabs.ETABS2018)
+                fin = E2KFile.FindIndex(x => x.Contains("$ GRIDS")) - 2;
+            else
+                fin = E2KFile.FindIndex(x => x.Contains("$ DIAPHRAGM NAMES")) - 2;
+
+            for (int i = fin; i >= inicio; i--)
+            {
+                var Temp = E2KFile[i].Split();
+                string Story_name = Texto_sub(Temp, 3, 34);
+                string Story_Height = Temp[6];
+                Elevation += float.Parse(Story_Height);
+
+                Storyi = new Story(Story_name, float.Parse(Story_Height));
+                Storyi.StoryElevation = Elevation;
+                Stories.Add(Storyi);
+            }
+
+            return Stories;
+        }
+
+        private List<Material> GetMaterials()
+        {
+            var materials = new List<Material>();
+            int inicio = 0; int fin = 0;
+            string resist_material = "";
+            string Material_E = "";
+            Enum_Material tipomaterial = Enum_Material.Concrete;
+
+            inicio = E2KFile.FindIndex(x => x.Contains("$ MATERIAL PROPERTIES")) + 1;
+
+            if (modelo.version == Version_Etabs.ETABS2018)
+                fin = E2KFile.FindIndex(x => x.Contains("$ REBAR DEFINITIONS")) - 2;
+            else
+                fin = E2KFile.FindIndex(x => x.Contains("$ FRAME SECTIONS")) - 2;
+
+            if (modelo.version == Version_Etabs.ETABS9)
+            {
+                GetMaterial95(materials, inicio, fin, ref resist_material, ref Material_E, ref tipomaterial);
+            }
+            else
+            {
+                string Material_name = "";
+                int Pos = 0;
+                var prueba = E2KFile.GetRange(inicio, fin - inicio).Select(x => x.Split()[4]).Distinct().ToList();
+
+                foreach (string texto in prueba)
+                {
+                    GetMaterial2018(inicio, fin, ref resist_material, ref Material_E, ref tipomaterial, ref Material_name, out Pos, texto);
+
+                    var materiali = new Material(Material_name, float.Parse(Material_E), float.Parse(resist_material))
+                    {
+                        tipo_Material = tipomaterial
+                    };
+
+                    materials.Add(materiali);
+                }
+            }
+
+            return materials;
+        }
+
+        private void GetMaterial95(List<Material> materials, int inicio, int fin, ref string resist_material, ref string Material_E, ref Enum_Material tipomaterial)
+        {
+            for (int i = inicio; i < fin; i += 2)
+            {
+                var Temp1 = E2KFile[i].Split();
+                var Temp2 = E2KFile[i + 1].Split();
+                var Materialname = Texto_sub(Temp1, 4, 34);
+                Material_E = Temp1[16];
+
+                if (Temp2[7].Contains("STEEL") | Temp2[7].Contains("CONCRETE"))
+                {
+                    if (Temp2[4].Contains("STEEL"))
+                    {
+                        tipomaterial = Enum_Material.Steel;
+                        resist_material = Temp2[10];
+                    }
+                    else
+                    {
+                        tipomaterial = Enum_Material.Concrete;
+                        resist_material = Temp2[13];
+                    }
+
+                    var materiali = new Material(Materialname, float.Parse(Material_E), float.Parse(resist_material))
+                    {
+                        tipo_Material = tipomaterial
+                    };
+                    materials.Add(materiali);
+                }
+            }
+        }
+
+        private void GetMaterial2018(int inicio, int fin, ref string resist_material, ref string Material_E, ref Enum_Material tipomaterial, ref string Material_name, out int Pos, string texto)
+        {
+            Pos = texto.LastIndexOf((char)34);
+            Material_name = texto.Substring(1, Pos - 1);
+            string Aux = Material_name;
+            var temp = E2KFile.GetRange(inicio, fin - inicio).FindAll(x => x.Contains($"{(char)34}{Aux}{(char)34}")).ToList();
+            string[] dummy = { };
+            foreach (string E2KLine in temp)
+            {
+                if (E2KLine.Contains(" TYPE "))
+                {
+                    dummy = E2KLine.ToUpper().Split();
+
+                    if (dummy[9].Contains("STEEL") | dummy[9].Contains("CONCRETE"))
+                    {
+                        if (dummy[9].Contains("STEEL"))
+                            tipomaterial = Enum_Material.Steel;
+                        else
+                            tipomaterial = Enum_Material.Concrete;
+                    }
+                }
+                if (E2KLine.Contains(" E "))
+                {
+                    dummy = E2KLine.ToUpper().Split();
+                    Material_E = dummy[12];
+                }
+                if (E2KLine.Contains(" FY ") | E2KLine.Contains(" FC "))
+                {
+                    dummy = E2KLine.ToUpper().Split();
+                    if (E2KLine.Contains(" FY "))
+                        resist_material = dummy[7];
+                    else
+                        resist_material = dummy[9];
+                }
+            }
+        }
+
+        private static string Texto_sub(string[] vector_texto, int indice, int Caracter)
+        {
+            int Pos;
+            string Texto;
+            Pos = vector_texto[indice].LastIndexOf((char)Caracter);
+            Texto = vector_texto[indice].Substring(1, Pos - 1);
+
+            return Texto;
+        }
     }
 }
