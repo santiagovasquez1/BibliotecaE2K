@@ -23,6 +23,7 @@ namespace B_Lectura_E2K
             modelo.Stories = GetStories();
             modelo.Materials = GetMaterials();
             modelo.ConcreteSections = GetFrameSections();
+            modelo.WallSections = GetWallSections();
         }
 
         private Version_Etabs GetVersion()
@@ -40,6 +41,8 @@ namespace B_Lectura_E2K
                 return Version_Etabs.ETABS2018;
             }
         }
+
+        #region Listas del modelo
 
         private List<Story> GetStories()
         {
@@ -124,18 +127,96 @@ namespace B_Lectura_E2K
 
             if (modelo.Version == Version_Etabs.ETABS2018)
             {
-                GetConcreteSection(dummy, FrameName, Temp_material, Material_dummy, inicio, fin, framei, concreteSections,11, 14);
+                GetConcreteSection(dummy, FrameName, Temp_material, Material_dummy, inicio, fin, framei, concreteSections, 11, 14);
             }
             else
             {
-                GetConcreteSection(dummy, FrameName, Temp_material, Material_dummy, inicio, fin, framei, concreteSections,10, 13);
+                GetConcreteSection(dummy, FrameName, Temp_material, Material_dummy, inicio, fin, framei, concreteSections, 10, 13);
             }
-          
 
             return concreteSections;
         }
 
-        private void GetConcreteSection(string[] dummy, string FrameName, string Temp_material, Material Material_dummy, int inicio, int fin, IConcreteSection framei, List<IConcreteSection> concreteSections,int indiceM,int indiceB)
+        private List<Wall_Section> GetWallSections()
+        {
+            int inicio = 0; int fin = 0;
+            string[] dummy = { };
+            string Temp_material = "";
+            string WallSectionName = "";
+            float bw = 0;
+            Material Material_dummy = null;
+            Wall_Section walli = null;
+            List<Wall_Section> Temp_wall = new List<Wall_Section>();
+
+            if (modelo.Version == Version_Etabs.ETABS2018)
+                GetWalls2018(inicio, fin, dummy, Temp_material, WallSectionName, bw, Material_dummy, walli, Temp_wall);
+            else
+                GetWalls95(inicio, fin, dummy, Temp_material, WallSectionName, bw, Material_dummy, walli, Temp_wall);
+
+            return Temp_wall;
+        }
+
+        private void GetWalls95(int inicio, int fin, string[] dummy, string Temp_material, string WallSectionName, float bw, Material Material_dummy, Wall_Section walli, List<Wall_Section> Temp_wall)
+        {
+            inicio = E2KFile.FindIndex(x => x.Contains("$ WALL/SLAB/DECK PROPERTIES")) + 1;
+            fin = E2KFile.FindIndex(x => x.Contains("$ LINK PROPERTIES")) - 2;
+            var Temp = E2KFile.GetRange(inicio, fin - inicio).ToList();
+
+            foreach (string Linea in Temp)
+            {
+                dummy = Linea.Split();
+
+                if (dummy[10].Replace("\"", "").ToUpper().Contains("WALL"))
+                {
+                    WallSectionName = dummy[4].Replace("\"", "");
+                    Temp_material = dummy[7].Replace("\"", "");
+                    bw = float.Parse(dummy[19]);
+
+                    if (modelo.Materials.Exists(x => x.Material_name == Temp_material))
+                    {
+                        var prueba = from Material materiali in modelo.Materials
+                                     where materiali.Material_name == Temp_material
+                                     select materiali;
+
+                        Material_dummy = prueba.FirstOrDefault();
+                    }
+
+                    walli = new Wall_Section(WallSectionName, Material_dummy, bw);
+                    Temp_wall.Add(walli);
+                }
+            }
+        }
+
+        private void GetWalls2018(int inicio, int fin, string[] dummy, string Temp_material, string WallSectionName, float bw, Material Material_dummy, Wall_Section walli, List<Wall_Section> Temp_wall)
+        {
+            inicio = E2KFile.FindIndex(x => x.Contains("$ WALL PROPERTIES")) + 1;
+            fin = E2KFile.FindIndex(x => x.Contains("$ LINK PROPERTIES")) - 2;
+            var Temp = E2KFile.GetRange(inicio, fin - inicio).ToList();
+
+            foreach (string Linea in Temp)
+            {
+                dummy = Linea.Split();
+                WallSectionName = dummy[4].Replace("\"", "");
+                Temp_material = dummy[11].Replace("\"", "");
+                bw = float.Parse(dummy[17]);
+
+                if (modelo.Materials.Exists(x => x.Material_name == Temp_material))
+                {
+                    var prueba = from Material materiali in modelo.Materials
+                                 where materiali.Material_name == Temp_material
+                                 select materiali;
+
+                    Material_dummy = prueba.FirstOrDefault();
+                }
+
+                walli = new Wall_Section(WallSectionName, Material_dummy, bw);
+                Temp_wall.Add(walli);
+            }
+        }
+
+        #endregion Listas del modelo
+
+        private void GetConcreteSection(string[] dummy, string FrameName, string Temp_material, Material Material_dummy, int inicio, int fin, IConcreteSection framei, List<IConcreteSection> concreteSections, int indiceM, int indiceB)
         {
             fin = E2KFile.FindIndex(x => x.Contains("$ CONCRETE SECTIONS")) - 2;
             var Temp = E2KFile.GetRange(inicio, fin - inicio).FindAll(x => x.Contains(" MATERIAL "));
@@ -157,7 +238,7 @@ namespace B_Lectura_E2K
 
                     {
                         FrameName = dummy[4].Replace("\"", "");
-                        var FrameSection = dummy[indiceM].ToLower().Replace("\"", "");             
+                        var FrameSection = dummy[indiceM].ToLower().Replace("\"", "");
                         float h, b;
 
                         switch (FrameSection)

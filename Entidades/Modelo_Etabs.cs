@@ -9,6 +9,7 @@ namespace B_Lectura_E2K.Entidades
         public List<Material> Materials { get; set; }
         public List<IConcreteSection> ConcreteSections { get; set; }
         public List<ISteelSection> SteelSections { get; set; }
+        public List<Wall_Section> WallSections { get; set; }
         public List<Point> Points { get; set; }
     }
 }
