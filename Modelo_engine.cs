@@ -18,9 +18,10 @@ namespace B_Lectura_E2K
         {
             E2KFile = E2KString;
             modelo = new Modelo_Etabs();
-            modelo.version = GetVersion();
+            modelo.Version = GetVersion();
             modelo.Stories = GetStories();
             modelo.Materials = GetMaterials();
+            modelo.ConcreteSections = GetFrameSections();
         }
 
         private Version_Etabs GetVersion()
@@ -48,7 +49,7 @@ namespace B_Lectura_E2K
 
             inicio = E2KFile.FindIndex(x => x.Contains("$ STORIES - IN SEQUENCE FROM TOP")) + 1;
 
-            if (modelo.version == Version_Etabs.ETABS2018)
+            if (modelo.Version == Version_Etabs.ETABS2018)
                 fin = E2KFile.FindIndex(x => x.Contains("$ GRIDS")) - 2;
             else
                 fin = E2KFile.FindIndex(x => x.Contains("$ DIAPHRAGM NAMES")) - 2;
@@ -78,12 +79,12 @@ namespace B_Lectura_E2K
 
             inicio = E2KFile.FindIndex(x => x.Contains("$ MATERIAL PROPERTIES")) + 1;
 
-            if (modelo.version == Version_Etabs.ETABS2018)
+            if (modelo.Version == Version_Etabs.ETABS2018)
                 fin = E2KFile.FindIndex(x => x.Contains("$ REBAR DEFINITIONS")) - 2;
             else
                 fin = E2KFile.FindIndex(x => x.Contains("$ FRAME SECTIONS")) - 2;
 
-            if (modelo.version == Version_Etabs.ETABS9)
+            if (modelo.Version == Version_Etabs.ETABS9)
             {
                 GetMaterial95(materials, inicio, fin, ref resist_material, ref Material_E, ref tipomaterial);
             }
@@ -107,6 +108,40 @@ namespace B_Lectura_E2K
             }
 
             return materials;
+        }
+
+        private List<IConcreteSection> GetFrameSections()
+        {
+            string[] dummy = { };
+            string Temp_material = "";
+            Material Material_dummy;
+            int inicio = 0; int fin = 0;
+            inicio = E2KFile.FindIndex(x => x.Contains("$ FRAME SECTIONS")) + 1;
+
+            if (modelo.Version == Version_Etabs.ETABS2018)
+            {
+                fin = E2KFile.FindIndex(x => x.Contains("$ CONCRETE SECTIONS")) - 2;
+                var Temp = E2KFile.GetRange(inicio, fin - inicio).FindAll(x => x.Contains(" MATERIAL "));
+
+                foreach (string Linea in Temp)
+                {
+                    dummy = Linea.Split();
+                    Temp_material = Texto_sub(dummy, 7, 34);
+
+                    if (modelo.Materials.Exists(x => x.Material_name == Temp_material))
+                    {
+                       var prueba = from Material materiali in modelo.Materials
+                                         where materiali.Material_name == Temp_material
+                                         select materiali;
+
+                        Material_dummy = prueba.FirstOrDefault();
+
+                    }
+
+                }
+            }
+
+            return null;
         }
 
         private void GetMaterial95(List<Material> materials, int inicio, int fin, ref string resist_material, ref string Material_E, ref Enum_Material tipomaterial)
