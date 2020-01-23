@@ -1,7 +1,7 @@
 using B_Lectura_E2K.Entidades.Enumeraciones;
 namespace B_Lectura_E2K.Entidades.ConcreteSection
 {
-    public class SD:IConcreteSection
+    public class SD : IConcreteSection
     {
         public Enum_Seccion _TipoSeccion { get; set; }
         public string _Name { get; set; }
@@ -12,7 +12,7 @@ namespace B_Lectura_E2K.Entidades.ConcreteSection
         public float TW { get; set; }
         public float TF { get; set; }
 
-        public SD(string nombre, float b, float h,float tw,float tf, Material material, Enum_Seccion shape)
+        public SD(string nombre, float b, float h, float tw, float tf, Material material, Enum_Seccion shape)
         {
             _Name = nombre;
             B = b;
@@ -31,7 +31,7 @@ namespace B_Lectura_E2K.Entidades.ConcreteSection
 
         public override string ToString()
         {
-            string Nombre_seccion="";
+            string Nombre_seccion = "";
             if (_TipoSeccion == Enum_Seccion.Tee)
             {
                 Nombre_seccion = $"T{B}X{H}X{TW}X{TF}{_Material.Material_name}";

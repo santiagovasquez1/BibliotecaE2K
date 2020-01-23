@@ -4,6 +4,6 @@ namespace B_Lectura_E2K.Entidades.Enumeraciones
     {
         Steel,
         Concrete
-        
+
     }
 }

@@ -1,7 +1,4 @@
 ﻿using B_Lectura_E2K.Entidades.Enumeraciones;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace B_Lectura_E2K.Entidades
 {
@@ -11,7 +8,7 @@ namespace B_Lectura_E2K.Entidades
         public float Sf { get; set; }
         public Enum_LoadPattern Type { get; set; }
 
-        public Load_Pattern(string name,Enum_LoadPattern type,float scalefactor=1)
+        public Load_Pattern(string name, Enum_LoadPattern type, float scalefactor = 1)
         {
             _Name = name;
             Type = type;

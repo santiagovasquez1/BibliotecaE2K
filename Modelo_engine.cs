@@ -1,4 +1,5 @@
 ﻿using B_Lectura_E2K.Entidades;
+using B_Lectura_E2K.Entidades.ConcreteSection;
 using B_Lectura_E2K.Entidades.Enumeraciones;
 using System.Collections.Generic;
 using System.Linq;
@@ -113,43 +114,73 @@ namespace B_Lectura_E2K
         private List<IConcreteSection> GetFrameSections()
         {
             string[] dummy = { };
+            string FrameName = "";
             string Temp_material = "";
-            Material Material_dummy;
+            Material Material_dummy = null;
             int inicio = 0; int fin = 0;
+            IConcreteSection framei = null;
             List<IConcreteSection> concreteSections = new List<IConcreteSection>();
             inicio = E2KFile.FindIndex(x => x.Contains("$ FRAME SECTIONS")) + 1;
 
             if (modelo.Version == Version_Etabs.ETABS2018)
             {
-                fin = E2KFile.FindIndex(x => x.Contains("$ CONCRETE SECTIONS")) - 2;
-                var Temp = E2KFile.GetRange(inicio, fin - inicio).FindAll(x => x.Contains(" MATERIAL "));
+                GetConcreteSection(dummy, FrameName, Temp_material, Material_dummy, inicio, fin, framei, concreteSections,11, 14);
+            }
+            else
+            {
+                GetConcreteSection(dummy, FrameName, Temp_material, Material_dummy, inicio, fin, framei, concreteSections,10, 13);
+            }
+          
 
-                foreach (string Linea in Temp)
+            return concreteSections;
+        }
+
+        private void GetConcreteSection(string[] dummy, string FrameName, string Temp_material, Material Material_dummy, int inicio, int fin, IConcreteSection framei, List<IConcreteSection> concreteSections,int indiceM,int indiceB)
+        {
+            fin = E2KFile.FindIndex(x => x.Contains("$ CONCRETE SECTIONS")) - 2;
+            var Temp = E2KFile.GetRange(inicio, fin - inicio).FindAll(x => x.Contains(" MATERIAL "));
+
+            foreach (string Linea in Temp)
+            {
+                dummy = Linea.Split();
+                Temp_material = dummy[7].Replace("\"", "");
+
+                if (modelo.Materials.Exists(x => x.Material_name == Temp_material))
                 {
-                    dummy = Linea.Split();
-                    Temp_material = Texto_sub(dummy, 7, 34);
+                    var prueba = from Material materiali in modelo.Materials
+                                 where materiali.Material_name == Temp_material
+                                 select materiali;
 
-                    if (modelo.Materials.Exists(x => x.Material_name == Temp_material))
+                    Material_dummy = prueba.FirstOrDefault();
+
+                    if (Material_dummy.tipo_Material == Enum_Material.Concrete)
+
                     {
-                       var prueba = from Material materiali in modelo.Materials
-                                         where materiali.Material_name == Temp_material
-                                         select materiali;
+                        FrameName = dummy[4].Replace("\"", "");
+                        var FrameSection = dummy[indiceM].ToLower().Replace("\"", "");             
+                        float h, b;
 
-                        Material_dummy = prueba.FirstOrDefault();
-
-                        if (Material_dummy.tipo_Material == Enum_Material.Concrete)
+                        switch (FrameSection)
                         {
+                            case "rectangular":
+                                h = float.Parse(dummy[indiceB]);
+                                b = float.Parse(dummy[16]);
+                                framei = new Rectangular(FrameName, b, h, Material_dummy, Enum_Seccion.Rectangular);
+                                break;
 
+                            case "circular":
+                                h = float.Parse(dummy[indiceB]);
+                                framei = new Circular(FrameName, h, Material_dummy, Enum_Seccion.Circular);
+                                break;
 
-                            
+                            //No hacer nada por el momento hasta saber como lo modelan
+                            case "sd":
+                                break;
                         }
-
+                        concreteSections.Add(framei);
                     }
-
                 }
             }
-
-            return null;
         }
 
         private void GetMaterial95(List<Material> materials, int inicio, int fin, ref string resist_material, ref string Material_E, ref Enum_Material tipomaterial)

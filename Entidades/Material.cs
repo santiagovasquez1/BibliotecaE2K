@@ -1,6 +1,6 @@
+using B_Lectura_E2K.Entidades.Enumeraciones;
 using System;
 using System.Collections.Generic;
-using B_Lectura_E2K.Entidades.Enumeraciones;
 
 namespace B_Lectura_E2K.Entidades
 {
@@ -59,7 +59,7 @@ namespace B_Lectura_E2K.Entidades
             return hashCode;
         }
 
-        public static bool operator ==(Material m1,Material m2)
+        public static bool operator ==(Material m1, Material m2)
         {
             return m1.Equals(m2);
         }

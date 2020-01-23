@@ -29,7 +29,7 @@ namespace B_Lectura_E2K.Entidades.ConcreteSection
         public override string ToString()
         {
             string Nombre_seccion;
-            Nombre_seccion = $"C{B}X{H}{_Material.Material_name}";
+            Nombre_seccion = $"R{B}X{H}{_Material.Material_name}";
             return Nombre_seccion;
         }
     }

@@ -1,5 +1,5 @@
-using System;
 using B_Lectura_E2K.Entidades.Enumeraciones;
+using System;
 
 namespace B_Lectura_E2K.Entidades.ConcreteSection
 {
