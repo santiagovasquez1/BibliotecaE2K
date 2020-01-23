@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <Reference Include="B_Lectura_E2K">
-      <HintPath>..\BibliotecaE2K\bin\Debug\netstandard2.0\B_Lectura_E2K.dll</HintPath>
+      <HintPath>..\bin\Debug\netstandard2.0\B_Lectura_E2K.dll</HintPath>
     </Reference>
   </ItemGroup>
 

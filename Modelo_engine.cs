@@ -116,6 +116,7 @@ namespace B_Lectura_E2K
             string Temp_material = "";
             Material Material_dummy;
             int inicio = 0; int fin = 0;
+            List<IConcreteSection> concreteSections = new List<IConcreteSection>();
             inicio = E2KFile.FindIndex(x => x.Contains("$ FRAME SECTIONS")) + 1;
 
             if (modelo.Version == Version_Etabs.ETABS2018)
@@ -135,6 +136,13 @@ namespace B_Lectura_E2K
                                          select materiali;
 
                         Material_dummy = prueba.FirstOrDefault();
+
+                        if (Material_dummy.tipo_Material == Enum_Material.Concrete)
+                        {
+
+
+                            
+                        }
 
                     }
 
