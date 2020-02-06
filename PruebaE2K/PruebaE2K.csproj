@@ -11,4 +11,7 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\B_Lectura_E2K.csproj" />
+  </ItemGroup>
 </Project>

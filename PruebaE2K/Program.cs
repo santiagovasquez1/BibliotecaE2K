@@ -16,16 +16,17 @@ namespace PruebaE2K
 
         private static void Main(string[] args)
         {
-            Printer.WriteTitle("Cargando E2K ETABSV9.5");
-            var E2kFile = Cargar_E2K(EVersion.ETABS9);
-            var engine = new B_Lectura_E2K.Modelo_engine();
-            engine.Inicializar(E2kFile);
-            var modelo95 = engine.modelo;
-            ImpirimirPisos(modelo95);
-            ImprimirMateriales(modelo95);
+
+            //var E2kFile = Cargar_E2K(EVersion.ETABS9);
+            //var engine = new B_Lectura_E2K.Modelo_engine();
+            //engine.Inicializar(E2kFile);
+            //var modelo95 = engine.modelo;
+            //ImpirimirPisos(modelo95);
+            //ImprimirMateriales(modelo95);
 
             Printer.WriteTitle("Cargando E2K ETABSV2018");
-            E2kFile = Cargar_E2K(EVersion.ETABS2018);
+            var E2kFile = Cargar_E2K(EVersion.ETABS2018);
+            var engine = new B_Lectura_E2K.Modelo_engine();
             engine.Inicializar(E2kFile);
             var modelo2018 = engine.modelo;
             ImpirimirPisos(modelo2018);
