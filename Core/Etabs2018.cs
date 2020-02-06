@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using B_Lectura_E2K.Entidades;
 using B_Lectura_E2K.Entidades.Enumeraciones;
+using BibliotecaE2K.Core;
 
 namespace BibliotecaE2K
 {
@@ -19,6 +21,17 @@ namespace BibliotecaE2K
 
         public override List<Material> GetMaterials()
         {
+            var materials = new List<Material>();
+            int inicio = 0; int fin = 0;
+            string resist_material = "";
+            string Material_E = "";
+            Enum_Material tipomaterial = Enum_Material.Concrete;
+
+            inicio = ModeloFile.FindIndex(x => x.Contains("$ MATERIAL PROPERTIES")) + 1;
+            fin = ModeloFile.FindIndex(x => x.Contains("$ REBAR DEFINITIONS")) - 2;
+            
+            var ModeloRange = ModeloFile.GetRange(inicio, fin - inicio).Select(x => x.Split()[4]).Distinct().ToList();
+
             return null;
         }
 
@@ -32,31 +45,9 @@ namespace BibliotecaE2K
             inicio = ModeloFile.FindIndex(x => x.Contains("$ STORIES - IN SEQUENCE FROM TOP")) + 1;
             fin = ModeloFile.FindIndex(x => x.Contains("$ GRIDS")) - 2;
 
-            // if (Modelo.Version == Version_Etabs.ETABS2018)
-
-            // else
-            //     fin = ModeloFile.FindIndex(x => x.Contains("$ DIAPHRAGM NAMES")) - 2;
-
-            return ExtraerStories(Stories, ref Storyi, inicio, fin, ref Elevation);
+            IGetStory = new GetStoriesEtabs();
+            return IGetStory.ExtraerStories(Stories, ModeloFile, ref Storyi, inicio, fin, ref Elevation);
         }
-
-        private List<Story> ExtraerStories(List<Story> Stories, ref Story Storyi, int inicio, int fin, ref float Elevation)
-        {
-            for (int i = fin; i >= inicio; i--)
-            {
-                var Temp = ModeloFile[i].Split();
-                string Story_name = Temp[3].Replace("\"", "");
-                string Story_Height = Temp[6];
-                Elevation += float.Parse(Story_Height);
-
-                Storyi = new Story(Story_name, float.Parse(Story_Height));
-                Storyi.StoryElevation = Elevation;
-                Stories.Add(Storyi);
-            }
-
-            return Stories;
-        }
-
         public override List<Wall_Section> GetWallSections()
         {
             throw new System.NotImplementedException();

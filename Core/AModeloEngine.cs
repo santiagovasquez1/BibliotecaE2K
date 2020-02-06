@@ -14,7 +14,7 @@ namespace BibliotecaE2K
             get { return modelofile; }
             set { modelofile = value; }
         }
-        public IGetStories GetStory { get; set; }
+        public IGetStories IGetStory { get; set; }
         public AModeloEngine()
         {
             Modelo = new Modelo_Etabs();
@@ -25,7 +25,6 @@ namespace BibliotecaE2K
         }
         protected void GetFile(string PathFile)
         {
-
             string sline;
             List<string> Temp = new List<string>();
 
@@ -37,7 +36,6 @@ namespace BibliotecaE2K
             } while (!(sline == null));
 
             Reader.Close();
-
             ModeloFile = Temp;
         }
         public abstract List<Story> GetStories();

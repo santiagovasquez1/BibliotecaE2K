@@ -3,7 +3,7 @@ using B_Lectura_E2K.Entidades;
 
 namespace BibliotecaE2K.Core
 {
-    public class GetStoriesEtabs2018 : IGetStories
+    public class GetStoriesEtabs : IGetStories
     {
         public List<Story> ExtraerStories(List<Story> Stories, List<string> ModeloFile, ref Story Storyi, int inicio, int fin, ref float Elevation)
         {
