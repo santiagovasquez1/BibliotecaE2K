@@ -1,23 +1,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using B_Lectura_E2K.Entidades;
-using B_Lectura_E2K.Entidades.Enumeraciones;
-using BibliotecaE2K.Core;
 
-namespace BibliotecaE2K
+namespace BibliotecaE2K.Core
 {
-    public abstract class Etabs2018 : AModeloEngine
+    public class Etabs95 : AModeloEngine
     {
         public override List<IConcreteSection> GetFrameSections()
         {
-
             string[] dummy = { };
             string FrameName = "";
             string Temp_material = "";
             Material Material_dummy = null;
             int inicio = 0; int fin = 0;
-            int indiceM = 11;
-            int indiceB = 14;
+            int indiceM = 10;
+            int indiceB = 13;
             IConcreteSection framei = null;
             List<IConcreteSection> concreteSections = new List<IConcreteSection>();
 
@@ -30,19 +27,18 @@ namespace BibliotecaE2K
                                                          Material_dummy, inicio, fin, framei,
                                                          indiceM, indiceB, Modelo, ModeloFile);
         }
+
         public override List<Material> GetMaterials()
         {
-
-            int inicio = 0; int fin = 0;
-
-            inicio = ModeloFile.FindIndex(x => x.Contains("$ MATERIAL PROPERTIES")) + 1;
-            fin = ModeloFile.FindIndex(x => x.Contains("$ REBAR DEFINITIONS")) - 2;
+            int inicio = ModeloFile.FindIndex(x => x.Contains("$ MATERIAL PROPERTIES")) + 1;
+            int fin = ModeloFile.FindIndex(x => x.Contains("$ FRAME SECTIONS")) - 2;
 
             var TempMaterials = ModeloFile.GetRange(inicio, fin - inicio).Select(x => x.Split()[4]).Distinct().ToList();
-            ExtraerMateriales = new GetMaterialsEtabs2018();
 
+            ExtraerMateriales = new GetMaterialsEtabs95();
             return ExtraerMateriales.ExtraerMateriales(inicio, fin, ModeloFile, TempMaterials);
         }
+
         public override List<Story> GetStories()
         {
             var Stories = new List<Story>();
@@ -51,19 +47,20 @@ namespace BibliotecaE2K
             float Elevation = 0f;
 
             inicio = ModeloFile.FindIndex(x => x.Contains("$ STORIES - IN SEQUENCE FROM TOP")) + 1;
-            fin = ModeloFile.FindIndex(x => x.Contains("$ GRIDS")) - 2;
+            fin = ModeloFile.FindIndex(x => x.Contains("$ DIAPHRAGM NAMES")) - 2;
 
             IGetStory = new GetStoriesEtabs();
             return IGetStory.ExtraerStories(Stories, ModeloFile, ref Storyi, inicio, fin, ref Elevation);
         }
+
         public override List<Wall_Section> GetWallSections()
         {
-            int inicio = ModeloFile.FindIndex(x => x.Contains("$ WALL PROPERTIES")) + 1;
+            int inicio = ModeloFile.FindIndex(x => x.Contains("$ WALL/SLAB/DECK PROPERTIES")) + 1;
             int fin = ModeloFile.FindIndex(x => x.Contains("$ LINK PROPERTIES")) - 2;
 
-            ExtraerWallSections = new GetWallSectionsEtabs2018();
+            ExtraerWallSections = new GetWallSectionsEtabs95();
             return ExtraerWallSections.Get_Walls(ModeloFile, inicio, fin, Modelo);
-        }
 
+        }
     }
 }
