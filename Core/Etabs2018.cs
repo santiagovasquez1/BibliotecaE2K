@@ -60,9 +60,9 @@ namespace BibliotecaE2K
         {
             int inicio = ModeloFile.FindIndex(x => x.Contains("$ WALL PROPERTIES")) + 1;
             int fin = ModeloFile.FindIndex(x => x.Contains("$ LINK PROPERTIES")) - 2;
-            
-            ExtraerWallSections=new GetWallSectionsEtabs2018();
-            return ExtraerWallSections.Get_Walls(ModeloFile,inicio,fin,Modelo);
+
+            ExtraerWallSections = new GetWallSectionsEtabs2018();
+            return ExtraerWallSections.Get_Walls(ModeloFile, inicio, fin, Modelo);
         }
 
     }

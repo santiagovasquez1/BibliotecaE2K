@@ -145,6 +145,7 @@ namespace B_Lectura_E2K
             string Temp_material = "";
             string WallSectionName = "";
             float bw = 0;
+            
             Material Material_dummy = null;
             Wall_Section walli = null;
             List<Wall_Section> Temp_wall = new List<Wall_Section>();

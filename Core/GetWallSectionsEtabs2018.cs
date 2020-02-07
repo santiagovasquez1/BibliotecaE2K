@@ -10,9 +10,9 @@ namespace BibliotecaE2K.Core
         {
             var Temp = E2KFile.GetRange(inicio, fin - inicio).ToList();
             string[] dummy = { };
-            var Temp_wall=new List<Wall_Section>();
+            var Temp_wall = new List<Wall_Section>();
             Material Material_dummy = null;
-            
+
             foreach (string Linea in Temp)
             {
                 dummy = Linea.Split();
