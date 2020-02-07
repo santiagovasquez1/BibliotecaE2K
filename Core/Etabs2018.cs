@@ -24,17 +24,12 @@ namespace BibliotecaE2K
             inicio = ModeloFile.FindIndex(x => x.Contains("$ FRAME SECTIONS")) + 1;
             fin = ModeloFile.FindIndex(x => x.Contains("$ CONCRETE SECTIONS")) - 2;
 
-            IGetFrameSections frameSections = new GetFrameSectionsEtabs();
-            return frameSections.GetConcreteFrameSection(dummy, FrameName, Temp_material,
+            ExtraerFrameSections = new GetFrameSectionsEtabs();
+
+            return ExtraerFrameSections.GetConcreteFrameSection(dummy, FrameName, Temp_material,
                                                          Material_dummy, inicio, fin, framei,
                                                          indiceM, indiceB, Modelo, ModeloFile);
         }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
         public override List<Material> GetMaterials()
         {
 
@@ -63,9 +58,12 @@ namespace BibliotecaE2K
         }
         public override List<Wall_Section> GetWallSections()
         {
-            throw new System.NotImplementedException();
+            int inicio = ModeloFile.FindIndex(x => x.Contains("$ WALL PROPERTIES")) + 1;
+            int fin = ModeloFile.FindIndex(x => x.Contains("$ LINK PROPERTIES")) - 2;
+            
+            ExtraerWallSections=new GetWallSectionsEtabs2018();
+            return ExtraerWallSections.Get_Walls(ModeloFile,inicio,fin,Modelo);
         }
-
 
     }
 }

@@ -16,7 +16,8 @@ namespace BibliotecaE2K
         }
         protected IGetStories IGetStory { get; set; }
         protected IGetMaterial ExtraerMateriales { get; set; }
-        protected IGetFrameSections GetGetFrameSections { get; set; }
+        protected IGetFrameSections ExtraerFrameSections { get; set; }
+        protected IGetWallSections ExtraerWallSections{get;set;}
         protected AModeloEngine()
         {
             Modelo = new Modelo_Etabs();
