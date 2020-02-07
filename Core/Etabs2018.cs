@@ -6,8 +6,17 @@ using BibliotecaE2K.Core;
 
 namespace BibliotecaE2K
 {
-    public abstract class Etabs2018 : AModeloEngine
+    public class Etabs2018 : AModeloEngine
     {
+        public Etabs2018(string PathFile)
+        {
+            GetFile(PathFile);
+            Modelo = new Modelo_Etabs();
+            Modelo.Stories = GetStories();
+            Modelo.Materials = GetMaterials();
+            Modelo.ConcreteSections = GetFrameSections();
+            Modelo.WallSections = GetWallSections();
+        }
         public override List<IConcreteSection> GetFrameSections()
         {
 

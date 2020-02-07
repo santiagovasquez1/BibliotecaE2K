@@ -7,7 +7,7 @@ namespace BibliotecaE2K
 {
     public abstract class AModeloEngine
     {
-        protected Modelo_Etabs Modelo { get; set; }
+        public Modelo_Etabs Modelo { get; set; }
         private List<string> modelofile;
         protected List<string> ModeloFile
         {
@@ -17,16 +17,12 @@ namespace BibliotecaE2K
         protected IGetStories IGetStory { get; set; }
         protected IGetMaterial ExtraerMateriales { get; set; }
         protected IGetFrameSections ExtraerFrameSections { get; set; }
-        protected IGetWallSections ExtraerWallSections{get;set;}
+        protected IGetWallSections ExtraerWallSections { get; set; }
         protected AModeloEngine()
         {
-            Modelo = new Modelo_Etabs();
-            Modelo.Stories = GetStories();
-            Modelo.Materials = GetMaterials();
-            Modelo.ConcreteSections = GetFrameSections();
-            Modelo.WallSections = GetWallSections();
+
         }
-        protected void GetFile(string PathFile)
+        public void GetFile(string PathFile)
         {
             string sline;
             List<string> Temp = new List<string>();

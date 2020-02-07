@@ -54,14 +54,14 @@ namespace BibliotecaE2K.Core
                         else
                             resist_material = dummy[9];
                     }
-                    var materiali = new Material(Material_name, float.Parse(Material_E), float.Parse(resist_material))
-                    {
-                        tipo_Material = tipomaterial
-                    };
-                    materials.Add(materiali);
+
                 }
 
-
+                var materiali = new Material(Material_name, float.Parse(Material_E), float.Parse(resist_material))
+                {
+                    tipo_Material = tipomaterial
+                };
+                materials.Add(materiali);
             }
             return materials;
         }

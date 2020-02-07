@@ -6,6 +6,15 @@ namespace BibliotecaE2K.Core
 {
     public class Etabs95 : AModeloEngine
     {
+        public Etabs95(string PathFile)
+        {
+            GetFile(PathFile);
+            Modelo = new Modelo_Etabs();         
+            Modelo.Stories = GetStories();
+            Modelo.Materials = GetMaterials();
+            Modelo.ConcreteSections = GetFrameSections();
+            Modelo.WallSections = GetWallSections();
+        }
         public override List<IConcreteSection> GetFrameSections()
         {
             string[] dummy = { };

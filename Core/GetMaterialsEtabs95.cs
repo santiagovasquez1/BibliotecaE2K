@@ -26,7 +26,7 @@ namespace BibliotecaE2K.Core
 
                 var temp = ModelFile.GetRange(inicio, fin - inicio).FindAll(x => x.Contains($"{(char)34}{Aux}{(char)34}")).ToList();
 
-                for (int i = 0; i < temp.Count; i += 2)
+                for (int i = 0; i < temp.Count-1; i += 2)
                 {
                     var Temp1 = temp[i].Split();
                     var Temp2 = temp[i + 1].Split();
