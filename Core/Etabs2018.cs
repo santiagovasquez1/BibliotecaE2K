@@ -10,8 +10,24 @@ namespace BibliotecaE2K
     {
         public override List<IConcreteSection> GetFrameSections()
         {
-            return null;
 
+            string[] dummy = { };
+            string FrameName = "";
+            string Temp_material = "";
+            Material Material_dummy = null;
+            int inicio = 0; int fin = 0;
+            int indiceM = 11;
+            int indiceB = 11;
+            IConcreteSection framei = null;
+            List<IConcreteSection> concreteSections = new List<IConcreteSection>();
+
+            inicio = ModeloFile.FindIndex(x => x.Contains("$ FRAME SECTIONS")) + 1;
+            fin = ModeloFile.FindIndex(x => x.Contains("$ CONCRETE SECTIONS")) - 2;
+
+            IGetFrameSections frameSections = new GetFrameSectionsEtabs();
+            return frameSections.GetConcreteFrameSection(dummy, FrameName, Temp_material,
+                                                         Material_dummy, inicio, fin, framei,
+                                                         indiceM, indiceB, Modelo, ModeloFile);
         }
 
         public override int GetHashCode()
@@ -21,20 +37,17 @@ namespace BibliotecaE2K
 
         public override List<Material> GetMaterials()
         {
-            var materials = new List<Material>();
+
             int inicio = 0; int fin = 0;
-            string resist_material = "";
-            string Material_E = "";
-            Enum_Material tipomaterial = Enum_Material.Concrete;
 
             inicio = ModeloFile.FindIndex(x => x.Contains("$ MATERIAL PROPERTIES")) + 1;
             fin = ModeloFile.FindIndex(x => x.Contains("$ REBAR DEFINITIONS")) - 2;
-            
-            var ModeloRange = ModeloFile.GetRange(inicio, fin - inicio).Select(x => x.Split()[4]).Distinct().ToList();
 
-            return null;
+            var TempMaterials = ModeloFile.GetRange(inicio, fin - inicio).Select(x => x.Split()[4]).Distinct().ToList();
+            ExtraerMateriales = new GetMaterialsEtabs2018();
+
+            return ExtraerMateriales.ExtraerMateriales(inicio, fin, ModeloFile, TempMaterials);
         }
-
         public override List<Story> GetStories()
         {
             var Stories = new List<Story>();

@@ -123,6 +123,7 @@ namespace B_Lectura_E2K
             int inicio = 0; int fin = 0;
             IConcreteSection framei = null;
             List<IConcreteSection> concreteSections = new List<IConcreteSection>();
+            
             inicio = E2KFile.FindIndex(x => x.Contains("$ FRAME SECTIONS")) + 1;
 
             if (modelo.Version == Version_Etabs.ETABS2018)

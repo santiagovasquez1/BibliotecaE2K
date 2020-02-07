@@ -7,15 +7,17 @@ namespace BibliotecaE2K
 {
     public abstract class AModeloEngine
     {
-        public Modelo_Etabs Modelo { get; set; }
+        protected Modelo_Etabs Modelo { get; set; }
         private List<string> modelofile;
-        public List<string> ModeloFile
+        protected List<string> ModeloFile
         {
             get { return modelofile; }
             set { modelofile = value; }
         }
-        public IGetStories IGetStory { get; set; }
-        public AModeloEngine()
+        protected IGetStories IGetStory { get; set; }
+        protected IGetMaterial ExtraerMateriales { get; set; }
+        protected IGetFrameSections GetGetFrameSections { get; set; }
+        protected AModeloEngine()
         {
             Modelo = new Modelo_Etabs();
             Modelo.Stories = GetStories();
