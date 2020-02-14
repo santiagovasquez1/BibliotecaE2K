@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using System.IO;
 using B_Lectura_E2K.Entidades;
 using BibliotecaE2K.Core;
+using System.Collections.Generic;
+using System.IO;
 
 namespace BibliotecaE2K
 {
@@ -9,19 +9,24 @@ namespace BibliotecaE2K
     {
         public Modelo_Etabs Modelo { get; set; }
         private List<string> modelofile;
+
         protected List<string> ModeloFile
         {
             get { return modelofile; }
             set { modelofile = value; }
         }
+
         protected IGetStories IGetStory { get; set; }
         protected IGetMaterial ExtraerMateriales { get; set; }
         protected IGetFrameSections ExtraerFrameSections { get; set; }
         protected IGetWallSections ExtraerWallSections { get; set; }
+        protected IGetPoints ExtaerPuntos { get; set; }
+        protected IGetFramesModel ExtraerFramesModel { get; set; }
+
         protected AModeloEngine()
         {
-
         }
+
         public void GetFile(string PathFile)
         {
             string sline;
@@ -37,9 +42,17 @@ namespace BibliotecaE2K
             Reader.Close();
             ModeloFile = Temp;
         }
+
         public abstract List<Story> GetStories();
+
         public abstract List<Material> GetMaterials();
+
         public abstract List<IConcreteSection> GetFrameSections();
+
         public abstract List<Wall_Section> GetWallSections();
+
+        public abstract List<MPoint> GetPoints();
+
+        public abstract List<IFrameModel> GetFrameModels();
     }
 }

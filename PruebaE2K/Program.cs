@@ -2,8 +2,6 @@
 using BibliotecaE2K;
 using BibliotecaE2K.Core;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using static System.Console;
 
 namespace PruebaE2K
@@ -20,20 +18,6 @@ namespace PruebaE2K
         {
             string Archivo = "";
             string FilePath = "";
-            //var E2kFile = Cargar_E2K(EVersion.ETABS9);
-            //var engine = new B_Lectura_E2K.Modelo_engine();
-            //engine.Inicializar(E2kFile);
-            //var modelo95 = engine.modelo;
-            //ImpirimirPisos(modelo95);
-            //ImprimirMateriales(modelo95);
-
-            Printer.WriteTitle("Cargando E2K ETABSV2018");
-            var E2kFile = Cargar_E2K(EVersion.ETABS2018);
-            var engine = new B_Lectura_E2K.Modelo_engine();
-            engine.Inicializar(E2kFile);
-            var modelo2018 = engine.modelo;
-            ImpirimirPisos(modelo2018);
-            ImprimirMateriales(modelo2018);
 
             Printer.WriteTitle("Cargando E2K ETABSV9.5");
             Archivo = "Etabs95.$ET";
@@ -43,6 +27,7 @@ namespace PruebaE2K
             var Modelo95 = etabs95.Modelo;
             ImpirimirPisos(Modelo95);
             ImprimirMateriales(Modelo95);
+            ImprimirPuntos(Modelo95);
             Printer.PresioneENTER();
             //ReadLine();
 
@@ -54,6 +39,7 @@ namespace PruebaE2K
             var Modelo2018 = etabs2018.Modelo;
             ImpirimirPisos(Modelo2018);
             ImprimirMateriales(Modelo2018);
+            ImprimirPuntos(Modelo2018);
             Printer.PresioneENTER();
             ReadLine();
         }
@@ -77,33 +63,13 @@ namespace PruebaE2K
             }
         }
 
-        private static List<string> Cargar_E2K(EVersion version)
+        private static void ImprimirPuntos(Modelo_Etabs modelo)
         {
-            string Archivo;
-
-            if (version == EVersion.ETABS9)
+            Printer.WriteTitle("Puntos modelo");
+            foreach (var punto in modelo.Points)
             {
-                Archivo = "ETABS95.$ET";
+                WriteLine(punto);
             }
-            else
-            {
-                Archivo = "Etabs2018.$ET";
-            }
-
-            string Ruta = AppDomain.CurrentDomain.BaseDirectory + Archivo;
-            string sline;
-            List<string> Temp = new List<string>();
-
-            var Reader = new StreamReader(Ruta);
-            do
-            {
-                sline = Reader.ReadLine();
-                Temp.Add(sline);
-            } while (!(sline == null));
-
-            Reader.Close();
-
-            return Temp;
         }
     }
 }

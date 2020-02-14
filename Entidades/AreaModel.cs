@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace B_Lectura_E2K.Entidades
 {
@@ -8,7 +6,7 @@ namespace B_Lectura_E2K.Entidades
     {
         public string Name { get; set; }
         public Wall_Section section { get; set; }
-        public List<Point> Points { get; set; }
+        public List<MPoint> Points { get; set; }
 
     }
 }

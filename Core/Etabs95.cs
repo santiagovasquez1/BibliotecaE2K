@@ -1,6 +1,6 @@
+using B_Lectura_E2K.Entidades;
 using System.Collections.Generic;
 using System.Linq;
-using B_Lectura_E2K.Entidades;
 
 namespace BibliotecaE2K.Core
 {
@@ -9,11 +9,12 @@ namespace BibliotecaE2K.Core
         public Etabs95(string PathFile)
         {
             GetFile(PathFile);
-            Modelo = new Modelo_Etabs();         
+            Modelo = new Modelo_Etabs();
             Modelo.Stories = GetStories();
             Modelo.Materials = GetMaterials();
             Modelo.ConcreteSections = GetFrameSections();
             Modelo.WallSections = GetWallSections();
+            Modelo.Points = GetPoints();
         }
         public override List<IConcreteSection> GetFrameSections()
         {
@@ -46,6 +47,16 @@ namespace BibliotecaE2K.Core
 
             ExtraerMateriales = new GetMaterialsEtabs95();
             return ExtraerMateriales.ExtraerMateriales(inicio, fin, ModeloFile, TempMaterials);
+        }
+
+        public override List<MPoint> GetPoints()
+        {
+            int inicio = ModeloFile.FindIndex(x => x.Contains("$ POINT COORDINATES")) + 1;
+            int Fin = ModeloFile.FindIndex(x => x.Contains("$ LINE CONNECTIVITIES")) - 2;
+            var RangePoints = ModeloFile.GetRange(inicio, Fin - inicio);
+
+            ExtaerPuntos = new GetPointsEtabs();
+            return ExtaerPuntos.ExtraerPuntos(RangePoints);
         }
 
         public override List<Story> GetStories()

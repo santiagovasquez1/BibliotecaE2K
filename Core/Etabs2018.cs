@@ -1,8 +1,7 @@
+using B_Lectura_E2K.Entidades;
+using BibliotecaE2K.Core;
 using System.Collections.Generic;
 using System.Linq;
-using B_Lectura_E2K.Entidades;
-using B_Lectura_E2K.Entidades.Enumeraciones;
-using BibliotecaE2K.Core;
 
 namespace BibliotecaE2K
 {
@@ -16,10 +15,11 @@ namespace BibliotecaE2K
             Modelo.Materials = GetMaterials();
             Modelo.ConcreteSections = GetFrameSections();
             Modelo.WallSections = GetWallSections();
+            Modelo.Points = GetPoints();
         }
+
         public override List<IConcreteSection> GetFrameSections()
         {
-
             string[] dummy = { };
             string FrameName = "";
             string Temp_material = "";
@@ -39,9 +39,9 @@ namespace BibliotecaE2K
                                                          Material_dummy, inicio, fin, framei,
                                                          indiceM, indiceB, Modelo, ModeloFile);
         }
+
         public override List<Material> GetMaterials()
         {
-
             int inicio = 0; int fin = 0;
 
             inicio = ModeloFile.FindIndex(x => x.Contains("$ MATERIAL PROPERTIES")) + 1;
@@ -52,6 +52,17 @@ namespace BibliotecaE2K
 
             return ExtraerMateriales.ExtraerMateriales(inicio, fin, ModeloFile, TempMaterials);
         }
+
+        public override List<MPoint> GetPoints()
+        {
+            int inicio = ModeloFile.FindIndex(x => x.Contains("$ POINT COORDINATES")) + 1;
+            int Fin = ModeloFile.FindIndex(x => x.Contains("$ LINE CONNECTIVITIES")) - 2;
+            var RangePoints = ModeloFile.GetRange(inicio, Fin - inicio);
+
+            ExtaerPuntos = new GetPointsEtabs();
+            return ExtaerPuntos.ExtraerPuntos(RangePoints);
+        }
+
         public override List<Story> GetStories()
         {
             var Stories = new List<Story>();
@@ -65,6 +76,7 @@ namespace BibliotecaE2K
             IGetStory = new GetStoriesEtabs();
             return IGetStory.ExtraerStories(Stories, ModeloFile, ref Storyi, inicio, fin, ref Elevation);
         }
+
         public override List<Wall_Section> GetWallSections()
         {
             int inicio = ModeloFile.FindIndex(x => x.Contains("$ WALL PROPERTIES")) + 1;
@@ -73,6 +85,5 @@ namespace BibliotecaE2K
             ExtraerWallSections = new GetWallSectionsEtabs2018();
             return ExtraerWallSections.Get_Walls(ModeloFile, inicio, fin, Modelo);
         }
-
     }
 }
