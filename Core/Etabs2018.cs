@@ -18,6 +18,11 @@ namespace BibliotecaE2K
             Modelo.Points = GetPoints();
         }
 
+        public override List<IFrameModel> GetFrameModels()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override List<IConcreteSection> GetFrameSections()
         {
             string[] dummy = { };
@@ -76,7 +81,7 @@ namespace BibliotecaE2K
             IGetStory = new GetStoriesEtabs();
             return IGetStory.ExtraerStories(Stories, ModeloFile, ref Storyi, inicio, fin, ref Elevation);
         }
-
+         
         public override List<Wall_Section> GetWallSections()
         {
             int inicio = ModeloFile.FindIndex(x => x.Contains("$ WALL PROPERTIES")) + 1;

@@ -1,186 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
-  <Class Name="B_Lectura_E2K.Entidades.AreaModel" Collapsed="true">
-    <Position X="4.75" Y="1.5" Width="1.5" />
+  <Class Name="B_Lectura_E2K.Entidades.Modelo_Etabs">
+    <Position X="3" Y="1.75" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>gAAAAAAAAAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Entidades\AreaModel.cs</FileName>
+      <HashCode>IEAIAACAAIAAgAAAAAAAAAAAAAAAAAAgAgAAAAAAAAE=</HashCode>
+      <FileName>Entidades\Modelo_Etabs.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="B_Lectura_E2K.Entidades.Material" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="8.75" Y="8.5" Width="1.5" />
+  <Class Name="B_Lectura_E2K.Entidades.Material">
+    <Position X="0.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAQAQEgACAAgAAAAAAAIABAAAAAAAAAmA=</HashCode>
       <FileName>Entidades\Material.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="B_Lectura_E2K.Entidades.MPoint" Collapsed="true">
-    <Position X="7.75" Y="0.5" Width="1.5" />
+  <Class Name="B_Lectura_E2K.Entidades.ConcreteFrameModel">
+    <Position X="2.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAACAAAAAAAAEAAAAAAQAAAAAAAAAAAAAAAAAYAE=</HashCode>
-      <FileName>Entidades\MPoint.cs</FileName>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAQAAAEAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\FramesModel\ConcreteFrameModel.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="B_Lectura_E2K.Entidades.Story" Collapsed="true">
-    <Position X="10.75" Y="2.5" Width="1.5" />
+  <Class Name="B_Lectura_E2K.Entidades.SteelFrameModel">
+    <Position X="5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAQAAAEAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Entidades\FramesModel\SteelFrameModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="B_Lectura_E2K.Entidades.Story">
+    <Position X="7.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAAAAAAAAAAAAAAEAAAAAAQAAAAAQAAAAAAAAAAAAAA=</HashCode>
       <FileName>Entidades\Story.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="B_Lectura_E2K.Entidades.Wall_Section" Collapsed="true">
-    <Position X="7.75" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AEAAAAAAAAAACAAEAAAAQAAAAAAKAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Entidades\Wall_Section.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="B_Lectura_E2K.Entidades.Modelo_Etabs">
-    <Position X="7.75" Y="4.25" Width="1.5" />
-    <AssociationLine Name="Materials" Type="B_Lectura_E2K.Entidades.Material">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.419" Y="0.745" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <AssociationLine Name="SteelSections" Type="B_Lectura_E2K.Entidades.ISteelSection">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.491" Y="0.589" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <TypeIdentifier>
-      <HashCode>IEAIAACAAIAAgAAAAAAAAAAAAAAAAAAgAgAAAAAAAAE=</HashCode>
-      <FileName>Entidades\Modelo_Etabs.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Version" />
-    </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="ConcreteSections" />
-      <Property Name="Frames" />
-      <Property Name="Materials" />
-      <Property Name="Points" />
-      <Property Name="Shells" />
-      <Property Name="SteelSections" />
-      <Property Name="Stories" />
-      <Property Name="WallSections" />
-    </ShowAsCollectionAssociation>
-  </Class>
-  <Class Name="BibliotecaE2K.AModeloEngine" Collapsed="true">
-    <Position X="4.75" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>QIRAoMAAQAAIAAAAAIAAAAgAAAAAAAEAAAgEAIAAAAA=</HashCode>
-      <FileName>Core\AModeloEngine.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ExtaerPuntos" />
-      <Property Name="ExtraerFrameSections" />
-      <Property Name="ExtraerFramesModel" />
-      <Property Name="ExtraerMateriales" />
-      <Property Name="ExtraerWallSections" />
-      <Property Name="IGetStory" />
-      <Property Name="Modelo" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="BibliotecaE2K.Etabs2018">
-    <Position X="3.5" Y="9" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAoEAAAAAIAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Core\Etabs2018.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BibliotecaE2K.Core.Etabs95">
-    <Position X="5.75" Y="9" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAoEAAAAAIAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Core\Etabs95.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BibliotecaE2K.Core.GetWallSectionsEtabs95" Collapsed="true">
-    <Position X="0.5" Y="5.75" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
-      <FileName>Core\GetWallSectionsEtabs95.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="BibliotecaE2K.Core.GetWallSectionsEtabs2018" Collapsed="true">
-    <Position X="2.75" Y="5.75" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
-      <FileName>Core\GetWallSectionsEtabs2018.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Interface Name="B_Lectura_E2K.Entidades.IConcreteSection" Collapsed="true">
-    <Position X="11.75" Y="8.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAABAAAACAAAIAAAAAAAARAAAAAAAEEAAAA=</HashCode>
-      <FileName>Entidades\IConcreteSection.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="B_Lectura_E2K.Entidades.IFrameModel" Collapsed="true">
-    <Position X="10.75" Y="0.5" Width="1.5" />
+  <Interface Name="B_Lectura_E2K.Entidades.IFrameModel">
+    <Position X="3.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAEAAAAAgAAAAAAAAAA=</HashCode>
       <FileName>Entidades\IFrameModel.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="B_Lectura_E2K.Entidades.ISteelSection" Collapsed="true">
-    <Position X="10.75" Y="6.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Entidades\ISteelSection.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="BibliotecaE2K.Core.IGetPoints" Collapsed="true">
-    <Position X="1.75" Y="7.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
-      <FileName>Core\IGetPoints.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="BibliotecaE2K.Core.IGetFrameSections" Collapsed="true">
-    <Position X="1.75" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Core\IGetFrameSections.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="BibliotecaE2K.Core.IGetFramesModel" Collapsed="true">
-    <Position X="7.75" Y="6.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEA=</HashCode>
-      <FileName>Core\IGetFramesModel.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="BibliotecaE2K.Core.IGetMaterial" Collapsed="true">
-    <Position X="4.75" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Core\IGetMaterial.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="BibliotecaE2K.Core.IGetWallSections" Collapsed="true">
-    <Position X="1.75" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
-      <FileName>Core\IGetWallSections.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="BibliotecaE2K.Core.IGetStories" Collapsed="true">
-    <Position X="0.75" Y="8.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Core\IGetStories.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Enum Name="B_Lectura_E2K.Entidades.Version_Etabs" Collapsed="true">
-    <Position X="10.75" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAABAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Entidades\Version_Etabs.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

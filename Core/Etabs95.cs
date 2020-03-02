@@ -16,6 +16,12 @@ namespace BibliotecaE2K.Core
             Modelo.WallSections = GetWallSections();
             Modelo.Points = GetPoints();
         }
+
+        public override List<IFrameModel> GetFrameModels()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override List<IConcreteSection> GetFrameSections()
         {
             string[] dummy = { };
