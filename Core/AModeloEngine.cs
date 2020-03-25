@@ -1,3 +1,4 @@
+using B_Lectura_E2K.Core;
 using B_Lectura_E2K.Entidades;
 using BibliotecaE2K.Core;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace BibliotecaE2K
         protected IGetWallSections ExtraerWallSections { get; set; }
         protected IGetPoints ExtaerPuntos { get; set; }
         protected IGetFramesModel ExtraerFramesModel { get; set; }
-
+        protected IFrameFactory FrameFactory { get; set; }
         protected AModeloEngine()
         {
         }
@@ -43,16 +44,19 @@ namespace BibliotecaE2K
             ModeloFile = Temp;
         }
 
+        public abstract void CreateFrames();
         public abstract List<Story> GetStories();
 
         public abstract List<Material> GetMaterials();
 
-        public abstract List<IConcreteSection> GetFrameSections();
+        public abstract List<ISection> GetFrameSections();
 
         public abstract List<Wall_Section> GetWallSections();
 
         public abstract List<MPoint> GetPoints();
 
-        public abstract List<IFrameModel> GetFrameModels();
+
+
+
     }
 }

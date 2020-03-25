@@ -1,3 +1,4 @@
+using B_Lectura_E2K.Core;
 using B_Lectura_E2K.Entidades;
 using BibliotecaE2K.Core;
 using System.Collections.Generic;
@@ -13,17 +14,33 @@ namespace BibliotecaE2K
             Modelo = new Modelo_Etabs();
             Modelo.Stories = GetStories();
             Modelo.Materials = GetMaterials();
-            Modelo.ConcreteSections = GetFrameSections();
+            Modelo.Sections = GetFrameSections();
             Modelo.WallSections = GetWallSections();
             Modelo.Points = GetPoints();
+            CreateFrames();
         }
 
-        public override List<IFrameModel> GetFrameModels()
+        public override void CreateFrames()
         {
-            throw new System.NotImplementedException();
+            int inicio = ModeloFile.FindIndex(x => x.Contains("$ LINE CONNECTIVITIES")) + 1;
+            int fin = ModeloFile.FindIndex(x => x.Contains("$ AREA CONNECTIVITIES")) - 2;
+
+            var TempLines = ModeloFile.GetRange(inicio, fin - inicio).ToList();
+
+            int inicio2 = ModeloFile.FindIndex(x => x.Contains("$ LINE ASSIGNS")) + 1;
+            int fin2 = ModeloFile.FindIndex(x => x.Contains("$ AREA ASSIGNS")) - 2;
+            var TempAssigns = ModeloFile.GetRange(inicio2, fin2 - inicio2).ToList();
+
+            FrameFactory = new FrameFactoryEtabs2018();
+
+            foreach (string templine in TempLines)
+            {
+                var Framei = FrameFactory.CreateFrames(templine, Modelo.Points, TempAssigns, Modelo.Stories, Modelo.Sections);
+                Modelo.Frames.AddRange(Framei);
+            }
         }
 
-        public override List<IConcreteSection> GetFrameSections()
+        public override List<ISection> GetFrameSections()
         {
             string[] dummy = { };
             string FrameName = "";
@@ -32,8 +49,8 @@ namespace BibliotecaE2K
             int inicio = 0; int fin = 0;
             int indiceM = 11;
             int indiceB = 14;
-            IConcreteSection framei = null;
-            List<IConcreteSection> concreteSections = new List<IConcreteSection>();
+            ISection framei = null;
+            List<ISection> concreteSections = new List<ISection>();
 
             inicio = ModeloFile.FindIndex(x => x.Contains("$ FRAME SECTIONS")) + 1;
             fin = ModeloFile.FindIndex(x => x.Contains("$ CONCRETE SECTIONS")) - 2;
@@ -81,7 +98,7 @@ namespace BibliotecaE2K
             IGetStory = new GetStoriesEtabs();
             return IGetStory.ExtraerStories(Stories, ModeloFile, ref Storyi, inicio, fin, ref Elevation);
         }
-         
+
         public override List<Wall_Section> GetWallSections()
         {
             int inicio = ModeloFile.FindIndex(x => x.Contains("$ WALL PROPERTIES")) + 1;
